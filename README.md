@@ -8,3 +8,4 @@ A read-only live dashboard for **Squeekchain** on Sepolia.
 - Next-block guess game: guess the minutes until the next Squeek block; scored in-browser when the height ticks over.
 
 Pure static HTML + JS, no build step, no wallet connection. Contracts from https://docs.squeekchain.com/developers/#deployments.
+Live at https://zhixiasqk.xyz
