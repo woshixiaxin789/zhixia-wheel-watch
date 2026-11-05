@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Zhixia Wheel Watch · Squeekchain</title>
+<meta name="description" content="Live Squeekchain (Sepolia) dashboard: Squeek block height, progress to next block, difficulty, SQK supply, plus a wallet checker and a next-block guessing game.">
+<style>
+:root{--bg:#0f0d0a;--card:#1b1712;--line:#2e271e;--fg:#f4ead8;--mut:#a8977c;--acc:#f2a541;--ok:#7bd88f;--bad:#ff6b6b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+header{padding:28px 20px 8px;max-width:960px;margin:auto}h1{margin:0;font-size:26px}h1 span{color:var(--acc)}
+.sub{color:var(--mut);margin-top:4px}main{max-width:960px;margin:auto;padding:12px 20px 40px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
+.k{color:var(--mut);font-size:12px;text-transform:uppercase;letter-spacing:.06em}.v{font-size:24px;margin-top:4px}
+.bar{height:14px;background:#2a231a;border-radius:7px;overflow:hidden;margin-top:10px}.bar i{display:block;height:100%;background:linear-gradient(90deg,#f2a541,#ffd27a);width:0;transition:width .8s}
+h2{font-size:16px;margin:28px 0 10px;color:var(--acc)}input,button{font:inherit;border-radius:8px;border:1px solid var(--line);background:#120f0b;color:var(--fg);padding:10px 12px}
+input{width:100%}button{background:var(--acc);color:#1b1206;border:0;cursor:pointer;font-weight:700}button:disabled{opacity:.5}
+.row{display:flex;gap:8px;margin-top:8px}.row input{flex:1}.mut{color:var(--mut)}.ok{color:var(--ok)}.bad{color:var(--bad)}
+.wheel{width:84px;height:84px;border:6px dashed var(--acc);border-radius:50%;margin:auto;animation:spin 2s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}.paused .wheel{animation:none;border-color:var(--bad)}
+footer{max-width:960px;margin:auto;padding:0 20px 30px;color:var(--mut);font-size:12px}a{color:var(--acc)}
+</style>
+</head>
+<body>
+<header>
+  <h1>🐹 Zhixia <span>Wheel Watch</span></h1>
+  <div class="sub">A live window into Squeekchain on Sepolia — every number below is read straight from the contracts.</div>
+</header>
+<main>
+  <div class="grid">
+    <div class="card" id="wheelCard" style="text-align:center"><div class="wheel"></div><div class="k" style="margin-top:10px">Core status</div><div class="v" id="status">…</div></div>
+    <div class="card"><div class="k">Squeek block height</div><div class="v" id="height">…</div><div class="bar"><i id="prog"></i></div><div class="mut" id="progTxt" style="margin-top:6px">…</div></div>
+    <div class="card"><div class="k">Difficulty (work / 1,000 blocks)</div><div class="v" id="diff">…</div><div class="mut" id="work">…</div></div>
+    <div class="card"><div class="k">SQK minted (Sepolia)</div><div class="v" id="sqk">…</div><div class="mut" id="nft">…</div></div>
+  </div>
+  <div class="mut" id="updated" style="margin-top:8px">Loading…</div>
+
+  <h2>🎯 Next-block guess</h2>
+  <div class="card">
+    <div>How many minutes until the hamster finishes the next Squeek block? Lock a guess; the page scores you when the block height ticks over. (Stored only in your browser.)</div>
+    <div class="row"><input id="guess" type="number" min="1" placeholder="minutes, e.g. 12"><button id="lock">Lock guess</button></div>
+    <div id="guessOut" class="mut" style="margin-top:8px"></div>
+    <div id="score" class="mut" style="margin-top:4px"></div>
+  </div>
+
+  <h2>👛 Wallet check</h2>
+  <div class="card">
+    <div>Paste any address to see its Sepolia SQK balance and how many Squeeks it holds.</div>
+    <div class="row"><input id="addr" placeholder="0x…"><button id="check">Check</button></div>
+    <div id="walletOut" style="margin-top:8px"></div>
+  </div>
+</main>
+<footer>
+  Contracts (Sepolia): SqueekCore <a href="https://eth-sepolia.blockscout.com/address/0x74665dAecA35A2303e767E76a2FF1FB6F93e119f" target="_blank" rel="noopener">0x7466…119f</a> ·
+  SQK <a href="https://eth-sepolia.blockscout.com/address/0x6872bfa5ccc3e9e440c6c16e5ffdabb8dba4cc76" target="_blank" rel="noopener">0x6872…cc76</a> ·
+  Squeeks <a href="https://eth-sepolia.blockscout.com/address/0x0eAF3E0d40A0a8E5a6Ac030b2459E9FB0B7905c6" target="_blank" rel="noopener">0x0eAF…05c6</a><br>
+  Read-only. No wallet connection, no signatures. Built by zhixia for the Squeekchain Genesis Code campaign. <a href="https://docs.squeekchain.com" target="_blank" rel="noopener">Squeekchain docs</a>
+</footer>
+<script src="app.js"></script>
+</body>
+</html>
